@@ -346,11 +346,11 @@ MonoBehaviour:
   width: 7
   height: 8
   cellSize: 20
-  canvas: {fileID: 60292007}
   parentContainer: {fileID: 2143689890}
   cellPrefab: {fileID: 416130413920074091, guid: 788097adf0d099d46b1f64abdf9285a0, type: 3}
   centerGrid: 1
   manualOffset: {x: 0, y: 0}
+  possibleTiles: 0000000001000000020000000300000004000000
 --- !u!1 &416624875
 GameObject:
   m_ObjectHideFlags: 0
