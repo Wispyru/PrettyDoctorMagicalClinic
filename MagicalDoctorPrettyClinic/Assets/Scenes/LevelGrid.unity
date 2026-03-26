@@ -310,7 +310,7 @@ GameObject:
   - component: {fileID: 339911603}
   - component: {fileID: 339911604}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -343,14 +343,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75313d28bcf34ce448884f153010cce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridTest
-  width: 7
-  height: 8
-  cellSize: 20
-  parentContainer: {fileID: 2143689890}
-  cellPrefab: {fileID: 416130413920074091, guid: 788097adf0d099d46b1f64abdf9285a0, type: 3}
-  centerGrid: 1
-  manualOffset: {x: 0, y: 0}
-  possibleTiles: 0000000001000000020000000300000004000000
+  _width: 10
+  _height: 10
+  _cellSize: 50
+  _parentContainer: {fileID: 2143689890}
+  _cellPrefab: {fileID: 416130413920074091, guid: 788097adf0d099d46b1f64abdf9285a0, type: 3}
+  _centerGrid: 1
+  _manualOffset: {x: 0, y: 0}
+  _possibleTiles: 0000000001000000020000000300000004000000
 --- !u!1 &416624875
 GameObject:
   m_ObjectHideFlags: 0

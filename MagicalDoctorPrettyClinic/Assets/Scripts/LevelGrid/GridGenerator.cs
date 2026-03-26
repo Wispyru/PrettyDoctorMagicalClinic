@@ -1,56 +1,56 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 public class GridGenerator : MonoBehaviour
 {
-    public int width = 10;
-    public int height = 10;
-    public float cellSize = 50f;
+    [SerializeField] private int _width = 10;
+    [SerializeField] private int _height = 10;
+    [SerializeField] private float _cellSize = 50f;
 
-    public RectTransform parentContainer;
-    public GameObject cellPrefab;
+    [SerializeField] private RectTransform _parentContainer;
+    [SerializeField] private GameObject _cellPrefab;
 
-    public bool centerGrid = true;
-    public Vector2 manualOffset;
+    [SerializeField] private bool _centerGrid = true;
+    [SerializeField] private Vector2 _manualOffset;
 
-    public TileType[] possibleTiles;
+    [SerializeField] private TileType[] _possibleTiles;
 
     private Grid grid;
 
     void Start()
     {
-        grid = new Grid(width, height, cellSize);
+        grid = new Grid(_width, _height, _cellSize);
         GenerateUIGrid();
     }
 
     private void GenerateUIGrid()
     {
-        Vector2 gridSize = new Vector2(width * cellSize, height * cellSize);
-        Vector2 centerOffset = centerGrid ? new Vector2(-gridSize.x / 2f, -gridSize.y / 2f) : Vector2.zero;
-        Vector2 totalOffset = centerOffset + manualOffset;
+        Vector2 gridSize = new Vector2(_width * _cellSize, _height * _cellSize);
+        Vector2 centerOffset = _centerGrid ? new Vector2(-gridSize.x / 2f, -gridSize.y / 2f) : Vector2.zero;
+        Vector2 totalOffset = centerOffset + _manualOffset;
 
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < _width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < _height; y++)
             {
                 TileType tileType = GetSafeRandomTile(x, y);
 
                 TileData tileData = new TileData(tileType, new Vector2Int(x, y));
                 grid.SetTile(x, y, tileData);
 
-                GameObject cellObj = Instantiate(cellPrefab, parentContainer);
+                GameObject cellObj = Instantiate(_cellPrefab, _parentContainer);
 
                 RectTransform rect = cellObj.GetComponent<RectTransform>();
-                if (rect == null)
-                    rect = cellObj.AddComponent<RectTransform>();
-
+                if (rect == null) rect = cellObj.AddComponent<RectTransform>();
+                
                 rect.anchorMin = new Vector2(0.5f, 0.5f);
                 rect.anchorMax = new Vector2(0.5f, 0.5f);
                 rect.pivot = Vector2.zero;
 
-                rect.anchoredPosition = new Vector2(x * cellSize, y * cellSize) + totalOffset;
-                rect.sizeDelta = new Vector2(cellSize, cellSize);
+                rect.anchoredPosition = new Vector2(x * _cellSize, y * _cellSize) + totalOffset;
+                rect.sizeDelta = new Vector2(_cellSize, _cellSize);
 
                 TileVisualiser(cellObj, tileType);
             }
@@ -59,7 +59,7 @@ public class GridGenerator : MonoBehaviour
     
     private TileType GetSafeRandomTile(int x, int y)
     {
-        List<TileType> availableTiles = new List<TileType>(possibleTiles);
+        List<TileType> availableTiles = new List<TileType>(_possibleTiles);
         
         if (x >= 2)
         {
