@@ -1,3 +1,4 @@
+using Unity.VectorGraphics;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LevelData", menuName = "Levels/LevelData")]
