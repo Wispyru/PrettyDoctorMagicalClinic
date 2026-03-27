@@ -11,7 +11,7 @@ public class LoadLevel : MonoBehaviour
         LoadedLevel.TurnCount = LevelToLoad.TurnCount;
         LoadedLevel.MovesPerTurn = LevelToLoad.MovesPerTurn;
 
-        //SceneManager.LoadScene()
+        SceneManager.LoadScene(1);
     }
 
     public void ClearLevel()
@@ -19,5 +19,7 @@ public class LoadLevel : MonoBehaviour
         LoadedLevel.TimeLimitInSeconds = 0f;
         LoadedLevel.TurnCount = 0;
         LoadedLevel.MovesPerTurn = 0;
+
+        SceneManager.LoadScene(0);
     }
 }

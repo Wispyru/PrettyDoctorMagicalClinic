@@ -4,6 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/FeatureScenes/LevelDataCreation.unity
+    guid: 9b79944681cd17b409ad9611e33f206a
+  - enabled: 1
+    path: Assets/Scenes/LevelGrid.unity
+    guid: 3295ff153c1d3ff46a53d89bff667eae
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
