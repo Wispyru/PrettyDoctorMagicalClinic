@@ -1,13 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using UnityEngine.Serialization;
 
 public class GridGenerator : MonoBehaviour
 {
-    [SerializeField] private int _width = 10;
-    [SerializeField] private int _height = 10;
-    [SerializeField] private float _cellSize = 50f;
+    [SerializeField] private int _width;
+    [SerializeField] private int _height;
+    [SerializeField] private float _cellSize;
 
     [SerializeField] private RectTransform _parentContainer;
     [SerializeField] private GameObject _cellPrefab;
@@ -37,14 +36,14 @@ public class GridGenerator : MonoBehaviour
             {
                 TileType tileType = GetSafeRandomTile(x, y);
 
-                TileData tileData = new TileData(tileType, new Vector2Int(x, y));
+                TileData tileData = new TileData(tileType, new Vector2Int(x, y)); // breng data later mee
                 grid.SetTile(x, y, tileData);
 
                 GameObject cellObj = Instantiate(_cellPrefab, _parentContainer);
 
                 RectTransform rect = cellObj.GetComponent<RectTransform>();
                 if (rect == null) rect = cellObj.AddComponent<RectTransform>();
-                
+
                 rect.anchorMin = new Vector2(0.5f, 0.5f);
                 rect.anchorMax = new Vector2(0.5f, 0.5f);
                 rect.pivot = Vector2.zero;
@@ -56,11 +55,11 @@ public class GridGenerator : MonoBehaviour
             }
         }
     }
-    
+
     private TileType GetSafeRandomTile(int x, int y)
     {
         List<TileType> availableTiles = new List<TileType>(_possibleTiles);
-        
+
         if (x >= 2)
         {
             TileType left1 = grid.GetTile(x - 1, y).type;
@@ -71,7 +70,7 @@ public class GridGenerator : MonoBehaviour
                 availableTiles.Remove(left1);
             }
         }
-        
+
         if (y >= 2)
         {
             TileType down1 = grid.GetTile(x, y - 1).type;
@@ -85,7 +84,7 @@ public class GridGenerator : MonoBehaviour
 
         return availableTiles[Random.Range(0, availableTiles.Count)];
     }
-    
+
     private void TileVisualiser(GameObject tile, TileType type)
     {
         Image img = tile.GetComponent<Image>();
