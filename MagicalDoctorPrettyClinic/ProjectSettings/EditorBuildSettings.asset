@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/FeatureScenes/LevelDataCreation.unity
+    path: Assets/Scenes/FeatureScenes/LevelSelectionScreen.unity
     guid: 9b79944681cd17b409ad9611e33f206a
   - enabled: 1
     path: Assets/Scenes/LevelGrid.unity

@@ -10,4 +10,7 @@ public class LoadedLevel
     public static float TimeLimitInSeconds;
     public static int TurnCount;
     public static int MovesPerTurn;
+
+    // final score
+    public static int Points = 0;
 }

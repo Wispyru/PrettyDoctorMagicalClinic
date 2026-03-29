@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class LoadLevel : MonoBehaviour
 {
     public LevelDataBase LevelToLoad;
-    
+
     public void LoadingLevel()
     {
         LoadedLevel.TimeLimitInSeconds = LevelToLoad.TimeLimitInSeconds;
