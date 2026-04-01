@@ -16,11 +16,14 @@ public class GridGenerator : MonoBehaviour
 
     [SerializeField] private TileType[] _possibleTiles;
 
-    private Grid grid;
+    private int _tileCount = 0;
+
+    public Grid Grid;
+    public TileData TileDataScript;
 
     void Start()
     {
-        grid = new Grid(_width, _height, _cellSize);
+        Grid = new Grid(_width, _height, _cellSize);
         GenerateUIGrid();
     }
 
@@ -36,10 +39,12 @@ public class GridGenerator : MonoBehaviour
             {
                 TileType tileType = GetSafeRandomTile(x, y);
 
-                TileData tileData = new TileData(tileType, new Vector2Int(x, y)); // breng data later mee
-                grid.SetTile(x, y, tileData);
+                TileDataScript = new TileData(tileType, new Vector2Int(x, y), false); // breng data later mee
+                Grid.SetTile(x, y, TileDataScript);
 
                 GameObject cellObj = Instantiate(_cellPrefab, _parentContainer);
+                cellObj.name = "tile " + _tileCount;
+                _tileCount++;
 
                 RectTransform rect = cellObj.GetComponent<RectTransform>();
                 if (rect == null) rect = cellObj.AddComponent<RectTransform>();
@@ -62,8 +67,8 @@ public class GridGenerator : MonoBehaviour
 
         if (x >= 2)
         {
-            TileType left1 = grid.GetTile(x - 1, y).type;
-            TileType left2 = grid.GetTile(x - 2, y).type;
+            TileType left1 = Grid.GetTile(x - 1, y).Type;
+            TileType left2 = Grid.GetTile(x - 2, y).Type;
 
             if (left1 == left2)
             {
@@ -73,8 +78,8 @@ public class GridGenerator : MonoBehaviour
 
         if (y >= 2)
         {
-            TileType down1 = grid.GetTile(x, y - 1).type;
-            TileType down2 = grid.GetTile(x, y - 2).type;
+            TileType down1 = Grid.GetTile(x, y - 1).Type;
+            TileType down2 = Grid.GetTile(x, y - 2).Type;
 
             if (down1 == down2)
             {

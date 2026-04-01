@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class TileData
 {
-    public TileType type;
-    public Vector2Int gridPosition;
+    public TileType Type;
+    public Vector2Int GridPosition;
+    public bool Selected;
 
-    public TileData(TileType type, Vector2Int pos)
+    public TileData(TileType type, Vector2Int pos, bool selected)
     {
-        this.type = type;
-        this.gridPosition = pos;
+        this.Type = type;
+        this.GridPosition = pos;
+        this.Selected = selected;
     }
 }

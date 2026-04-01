@@ -4,32 +4,36 @@ using UnityEngine.UI;
 
 public class TileSelect : MonoBehaviour
 {
-    [SerializeField] Color orignialColor;
-    [SerializeField] Image img;
-
+    private TileData _tileData;
 
     private void Start()
     {
-        img = GetComponent<Image>();
-        orignialColor = img.color;
+        _tileData = GetComponentInParent<GridGenerator>().TileDataScript;
     }
 
-    private void OnMouseDrag()
+    private void OnMouseDown()
     {
-        if (!CompareTag("tile") && GameData.CurrentSelectedTile != null) return;
-
-        SelectTile();
-    }
-
-    private void OnMouseUp()
-    {
-        GameData.CurrentSelectedTile = null;
+        if(GameData.CurrentSelectedTile == null)
+        {
+            SelectTile();
+            Debug.Log(GameData.CurrentSelectedTile);
+            return;
+        }
+        if (GameData.CurrentSelectedTile == gameObject)
+        {
+            DeselectTile();
+            Debug.Log(GameData.CurrentSelectedTile);
+            return;
+        }
     }
 
     public void SelectTile()
     {
         GameData.CurrentSelectedTile = gameObject;
-        Debug.Log("Successful!");
     }
 
+    public void DeselectTile()
+    {
+        GameData.CurrentSelectedTile = null;
+    }
 }
