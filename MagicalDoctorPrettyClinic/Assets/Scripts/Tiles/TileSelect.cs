@@ -30,6 +30,7 @@ public class TileSelect : MonoBehaviour
     public void SelectTile()
     {
         GameData.CurrentSelectedTile = gameObject;
+        GetComponentInParent<TileSwap>().CheckForSurroundingTiles();
     }
 
     public void DeselectTile()

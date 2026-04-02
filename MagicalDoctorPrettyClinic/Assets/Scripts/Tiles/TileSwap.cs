@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
+using UnityEditor.UI;
 
 public class TileSwap : MonoBehaviour
 {
@@ -21,34 +20,15 @@ public class TileSwap : MonoBehaviour
         _availableTiles = new List<GameObject>();
     }
 
-    private void Update()
+    private void OnTriggerStay2D(Collider2D collision)
     {
-
-        RaycastHit hit;
-        Debug.DrawRay(transform.position, -transform.right * Mathf.Infinity, Color.white);
-        int layerToCheck = 3;
-        if (Physics.Raycast(transform.position, -transform.right, out hit))
+        if (_selectedTile)
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.right) * Mathf.Infinity, Color.red);
-            Debug.Log(hit.distance);
+            Debug.Log(collision.name);
         }
-        else
-        {
-            Debug.Log("SHIT AINT WORKIE");
-
-
-        }
+        
     }
-
-    private void OnMouseDown()
-    {
-        if(GameData.CurrentSelectedTile != null)
-        {
-            CheckForSurroundingTiles();
-        }
-    }
-
-    private void CheckForSurroundingTiles()
+    public void CheckForSurroundingTiles()
     {
         _selectedTile = GameData.CurrentSelectedTile;
 
