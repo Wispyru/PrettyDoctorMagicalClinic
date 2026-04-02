@@ -9,7 +9,8 @@ public class TileSwap : MonoBehaviour
     private GameObject _tileToSwap;
     private GameObject _selectedTile;
     private List<GameObject> _availableTiles;
-
+    private Grid _grid;
+    private GameObject[] _inRange;
 
   //  private bool _matches = false;
     //private int _maxDist = 5;
@@ -18,6 +19,7 @@ public class TileSwap : MonoBehaviour
     {
         Instance = this;
         _availableTiles = new List<GameObject>();
+        _grid = GetComponentInParent<GridGenerator>().Grid;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -28,12 +30,16 @@ public class TileSwap : MonoBehaviour
         }
         
     }
-    public void CheckForSurroundingTiles()
+    public void CheckForSurroundingTiles(int x, int y)
     {
+        
+        
         _selectedTile = GameData.CurrentSelectedTile;
-
-
-
+        _inRange[0] = _grid.GetTile(x - 1, y).gameObject;
+        _grid.GetTile(x + 1, y);
+        _grid.GetTile(x, y - 1);
+        _grid.GetTile(x, y + 1);
+        
     }
 }
 

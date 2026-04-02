@@ -39,7 +39,7 @@ public class GridGenerator : MonoBehaviour
             {
                 TileType tileType = GetSafeRandomTile(x, y);
 
-                TileDataScript = new TileData(tileType, new Vector2Int(x, y), null); // breng data later mee
+                TileDataScript = new TileData(tileType, new Vector2Int(x, y)); // breng data later mee
                 Grid.SetTile(x, y, TileDataScript);
 
                 GameObject cellObj = Instantiate(_cellPrefab, _parentContainer);
@@ -60,7 +60,7 @@ public class GridGenerator : MonoBehaviour
             }
         }
     }
-
+    
     private TileType GetSafeRandomTile(int x, int y)
     {
         List<TileType> availableTiles = new List<TileType>(_possibleTiles);
