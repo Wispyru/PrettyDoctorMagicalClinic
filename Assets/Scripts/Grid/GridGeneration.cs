@@ -8,13 +8,15 @@ public class GridGeneration : MonoBehaviour
     public int Height;
     public GameObject TilePrefab;
     public GameObject[,] Grid;
-    
+    public MedicineMatch Matching;
+
     private List<MedicineType> _enumValues;
+    
   
     void Start()
     {
         Grid = new GameObject[Width, Height];
-         
+        Matching = GetComponent<MedicineMatch>();
         SetUpGrid();
     }
 
@@ -45,7 +47,7 @@ public class GridGeneration : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks the medicine tiles next to the current medicine tile.
+    /// Checks the medicine tiles next to the current medicine tile to ensure no matches are made when generating grid.
     /// </summary>
     /// <param name="column"></param>
     /// <param name="row"></param>
