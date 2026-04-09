@@ -7,12 +7,12 @@ public class GridGeneration : MonoBehaviour
     public int Width;
     public int Height;
     public GameObject TilePrefab;
-
-    private GameObject[,] _grid;
+    public GameObject[,] Grid;
+    
     private List<MedicineType> _enumValues;
     void Start()
     {
-        _grid = new GameObject[Width, Height];
+        Grid = new GameObject[Width, Height];
         SetUpGrid();
     }
 
@@ -29,12 +29,17 @@ public class GridGeneration : MonoBehaviour
                 CheckTileMatch(column, row);
                 Vector3 temporaryPosition = new Vector3(row, column, 2f);
                 GameObject newTile = Instantiate(TilePrefab, temporaryPosition, Quaternion.identity, transform);
+                MedicineSelect medicineSelect = newTile.AddComponent<MedicineSelect>();
+                medicineSelect.Position = new Vector2Int(row, column);
+
                 newTile.GetComponent<MedicineData>().Type = _enumValues[Random.Range(0, _enumValues.Count)];
                 newTile.GetComponent<MedicineData>().SetMedicineColor();
+
                 newTile.name = $"({row},{column})";
-                _grid[row, column] = newTile;
+                Grid[row, column] = newTile;
             }
         }
+
     }
 
     /// <summary>
@@ -70,7 +75,7 @@ public class GridGeneration : MonoBehaviour
     public GameObject GetMedicineAt(int column, int row)
     {
         if(column <  0 || column >= Height || row < 0 || row >= Width) return null;
-        GameObject tile = _grid[row, column];
+        GameObject tile = Grid[row, column];
 
         return tile;
     }
