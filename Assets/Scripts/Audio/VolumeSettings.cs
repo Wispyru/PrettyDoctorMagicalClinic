@@ -1,48 +1,46 @@
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class VolumeSettings : MonoBehaviour
 {
-    [SerializeField] private AudioMixer mixer;
+    [SerializeField] private AudioMixer myMixer;
     [SerializeField] private Slider musicSlider;
-    [SerializeField] private Slider SFXSlider;
+    //[SerializeField] private Slider SFXSlider;
 
     private void Start()
     {
-        if (PlayerPrefs.HasKey("MusicVolume"))
+        if (PlayerPrefs.HasKey("musicVolume"))
         {
-            LoadVolume(); 
+            LoadVolume();
         }
         else
         {
             SetMusicVolume();
-            SetSFXVolume();
         }
     }
-    
+
     public void SetMusicVolume()
     {
         float volume = musicSlider.value;
-        mixer.SetFloat("music", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("MusicVolume", volume);
+        myMixer.SetFloat("music", Mathf.Log10(volume) * 20); // "music" is the name of the exposed parameter in the audiomixer    
+        PlayerPrefs.SetFloat("musicVolume", volume); // saves the data of the players prefrence in the music slider
     }
-    
-    public void SetSFXVolume()
-    {
-        float volume = SFXSlider.value;
-        mixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("SFXVolume", volume);
-    }
+
+    //public void SetSFXVolume()
+    //{
+    //float volume = SFXSlider.value;
+    //mixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
+    //PlayerPrefs.SetFloat("SFXVolume", volume);
+    //}
 
     private void LoadVolume()
     {
-        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
-        SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume");
+        musicSlider.value = PlayerPrefs.GetFloat("musicVolume");
+        //SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume");
 
         SetMusicVolume();
-        SetSFXVolume();
+        //SetSFXVolume();
 
     }
 }
