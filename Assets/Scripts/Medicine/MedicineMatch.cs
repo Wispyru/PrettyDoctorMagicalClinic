@@ -1,55 +1,90 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 public class MedicineMatch : MonoBehaviour
 {
     private GridGeneration _gridGeneration;
-    private MedicineSelect _select;
-
-    private List<GameObject> matchedColumnTiles;
-    private List<GameObject> matchedRowTiles;
 
     private void Start()
     {
         _gridGeneration = GetComponent<GridGeneration>();
-        matchedColumnTiles = new List<GameObject>();
-        matchedRowTiles = new List<GameObject>();
     }
     
-    public void CheckForMatches()
+    public void CheckForMatches(GameObject current)
     {
-        for(int row = 0;  row < _gridGeneration.Width; row++)
-        {
-            for (int column = 0; column < _gridGeneration.Height; column++)
-            {
-                GameObject currentTile = _gridGeneration.GetMedicineAt(column, row);
-                matchedColumnTiles = FindColumnMatches(column, row, currentTile);
+        Debug.Log("reached.");
+        //var matchCount = 0;
 
+
+        HashSet<MedicineData> matches = new HashSet<MedicineData>();
+        Stack<MedicineData> checkedList = new Stack<MedicineData>();
+
+        checkedList.Push(current.GetComponent<MedicineData>());
+
+        while(checkedList.TryPop(out var target))
+        {
+            Debug.Log(target.ToString());
+            var neighbours = GetNeighbours(target.transform);
+
+            foreach (var x in neighbours)
+            {
+                Debug.Log($"Current tile = {x.ToString()}");
+                if (checkedList.TryPop(out target))
+                   {
+                    Debug.Log("AAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+                       continue;
+                   }
+
+                
+               /* if(x.Type == target.GetComponent<MedicineData>().Type)
+                {
+                    matches.Add(x);
+                    checkedList.Push(x);
+                }*/
             }
         }
     }
 
-    public List<GameObject> FindColumnMatches(int column, int row, GameObject tile)
+    private List<MedicineData> GetNeighbours(Transform current)
     {
-        List<GameObject> result = new List<GameObject>();
-        for (int i = column + 1; i < _gridGeneration.Height; i++)
+        List<MedicineData> collectedNeighbors = new List<MedicineData>();
+        if (!IsValid((int)current.position.x, (int)current.position.y)) return null;
+
+        if (IsValid((int)current.position.x, (int)current.position.y + 1))
         {
-            GameObject nextColumn = _gridGeneration.GetMedicineAt(i, row);
-      
+            MedicineData up = _gridGeneration.Grid[(int)current.position.x, (int)current.position.y + 1].GetComponent<MedicineData>();
+            Debug.Log($"top tile = {up}");
+            collectedNeighbors.Add(up);
         }
 
-        return result;
+        if (IsValid((int)current.position.x, (int)current.position.y - 1))
+        {
+            MedicineData down = _gridGeneration.Grid[(int)current.transform.position.x, (int)current.transform.position.y - 1].GetComponent<MedicineData>();
+            Debug.Log($"bottom tile = {down}");
+            collectedNeighbors.Add(down);
+        }
+
+        if (IsValid((int)current.position.x - 1, (int)current.position.y))
+        {
+            MedicineData left = _gridGeneration.Grid[(int)current.transform.position.x - 1, (int)current.transform.position.y].GetComponent<MedicineData>();
+            Debug.Log($"left tile = {left}");
+            collectedNeighbors.Add(left);
+        }
+
+        if (IsValid((int)current.position.x + 1, (int)current.position.y))
+        {
+            MedicineData right = _gridGeneration.Grid[(int)current.transform.position.x + 1, (int)current.transform.position.y].GetComponent<MedicineData>();
+            Debug.Log($"right tile = {right}");
+            collectedNeighbors.Add(right);
+        }
+
+        return collectedNeighbors;
     }
 
-   /* public List<GameObject> FindRowMatches(int column, int row, GameObject tile)
+    private bool IsValid(int r, int c)
     {
-        for(int i = column + 1; i < _gridGeneration.Width; i++)
-        {
-            GameObject nextRow = _gridGeneration.GetMedicineAt(column, i);
-
-        }
-    }*/
-
+        return r >= 0 && r < _gridGeneration.Width && c >= 0 && c < _gridGeneration.Height;
+    }
 }

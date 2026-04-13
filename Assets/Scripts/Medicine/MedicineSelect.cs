@@ -44,7 +44,7 @@ public class MedicineSelect : MonoBehaviour
         // A different tile is already selected
         if (Vector2Int.Distance(GameData.SelectedTile.Position, Position) == 1)
         {
-            _tileSwapping.SwapTiles(Position, GameData.SelectedTile.Position);
+            _tileSwapping.SwapTiles(GameData.SelectedTile.Position, Position);
             GameData.SelectedTile.Unselect();
         }
         else
