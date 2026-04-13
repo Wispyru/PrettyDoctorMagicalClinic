@@ -21,6 +21,9 @@ public class GridTileSwapping : MonoBehaviour
         tile1.transform.position = tile2.transform.position;
         tile2.transform.position = newPos;
 
+        _gridGeneration.Grid[tile1Position.x, tile1Position.y] = tile2;
+        _gridGeneration.Grid[tile2Position.x, tile2Position.y] = tile1;
+
         _gridGeneration.Matching.CheckForMatches(tile1);
 
         /*

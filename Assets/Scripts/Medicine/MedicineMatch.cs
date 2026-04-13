@@ -26,23 +26,16 @@ public class MedicineMatch : MonoBehaviour
         while(checkedList.TryPop(out var target))
         {
             Debug.Log(target.ToString());
-            var neighbours = GetNeighbours(target.transform);
+            List<MedicineData> neighbours = GetNeighbours(target.transform);
 
-            foreach (var x in neighbours)
+            foreach (MedicineData x in neighbours)
             {
                 Debug.Log($"Current tile = {x.ToString()}");
-                if (checkedList.TryPop(out target))
-                   {
-                    Debug.Log("AAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-                       continue;
-                   }
+                if (!checkedList.TryPop(out target)) continue;
 
-                
-               /* if(x.Type == target.GetComponent<MedicineData>().Type)
-                {
-                    matches.Add(x);
-                    checkedList.Push(x);
-                }*/
+                if (x.Type != target.GetComponent<MedicineData>().Type) return;
+                matches.Add(x);
+                checkedList.Push(x);
             }
         }
     }
