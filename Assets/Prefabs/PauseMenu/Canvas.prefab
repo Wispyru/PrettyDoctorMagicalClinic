@@ -219,6 +219,7 @@ GameObject:
   - component: {fileID: 5797715348875709301}
   - component: {fileID: 4695930406096818994}
   - component: {fileID: 9054877113643762849}
+  - component: {fileID: 7676716415742466819}
   m_Layer: 5
   m_Name: Dark Space
   m_TagString: Untagged
@@ -283,6 +284,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &7676716415742466819
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2328635498579820772}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4793191537333236675
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,6 +347,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
   pauseMenu: {fileID: 4793191537333236675}
+  pausePanelRect: {fileID: 7310300911885144049}
+  pauseButtonRect: {fileID: 977421249572048982}
+  topPosPanelPauseY: 700
+  middlePosPanelPauseY: 0
+  topPosButtonPauseX: -33.60001
+  middlePosButtonPauseX: 40
+  tweenDurationPanelPause: 0.3
+  tweenDurationButtonPause: 0.1
+  canvasGroup: {fileID: 7676716415742466819}
 --- !u!1 &5091886760343233036
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,8 +519,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7280829397713230489}
   - {fileID: 977421249572048982}
+  - {fileID: 7280829397713230489}
   - {fileID: 3449081330350890505}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
