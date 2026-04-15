@@ -15,43 +15,32 @@ public class MedicineMatch : MonoBehaviour
     
     public void CheckForMatches(GameObject current)
     {
-        Debug.Log("reached.");
+        Debug.Log("Running check for matches");
 
-
+        
         HashSet<MedicineData> matches = new HashSet<MedicineData>();
         Stack<MedicineData> checkedList = new Stack<MedicineData>();
-
         MedicineData currentData = current.GetComponent<MedicineData>();
 
         checkedList.Push(currentData);
-        if (!matches.Contains(currentData))
+        if (checkedList.TryPop(out var target))
         {
-            matches.Add(currentData);
-        }
-        
-        while(checkedList.TryPop(out var target))
-        {
-            MedicineType targetType = target.Type;
-            Debug.Log(target.ToString());
+            Debug.Log($"reached checked list target, target is {target}");
             List<MedicineData> neighbours = GetNeighbours(target.transform);
-            foreach (MedicineData x in neighbours)
-            {
-                if (checkedList.TryPop(out target)) continue;
-                checkedList.Push(x);
+            MedicineType targetType = target.Type;
 
-                if (x.Type == targetType)
+            foreach (MedicineData neighbour in neighbours)
+            {
+                Debug.Log(neighbour);
+                checkedList.Push(currentData);
+                if (neighbour.Type == targetType)
                 {
-                    matches.Add(x);
-                    break;
+                    Debug.Log($"{neighbour} matches with {target}");
+                    matches.Add(neighbour);
+                    continue;
                 }
             }
         }
-
-        if (matches.Count >= 3)
-        {
-            MatchDestroy(matches); 
-        }
-            
     }
 
 
@@ -84,7 +73,7 @@ public class MedicineMatch : MonoBehaviour
     private void TryAddNeighbour(int x, int y, List<MedicineData> neighbours)
     {
         MedicineData neighbour = _gridGeneration.Grid[x, y].GetComponent<MedicineData>();
-        Debug.Log($"neighbour is = {neighbour}");
+        //Debug.Log($"neighbour is = {neighbour}");
         neighbours.Add(neighbour);
     }
 
@@ -92,9 +81,9 @@ public class MedicineMatch : MonoBehaviour
     {
         foreach (MedicineData g in matches)
         {
-            Debug.Log(g);
-            break;
+            g.gameObject.SetActive(false);
         }
+        matches.Clear();
         
     }
 
