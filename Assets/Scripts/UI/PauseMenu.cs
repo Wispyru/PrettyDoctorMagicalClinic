@@ -5,15 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    [SerializeField] GameObject pauseMenu;
-    [SerializeField] RectTransform pausePanelRect;
-    [SerializeField] RectTransform pauseButtonRect;
-    [SerializeField] float topPosPanelPauseY, middlePosPanelPauseY;
-    [SerializeField] float topPosButtonPauseX, middlePosButtonPauseX;
-    [SerializeField] float tweenDurationPanelPause;
-    [SerializeField] float tweenDurationButtonPause;
-    [SerializeField] CanvasGroup canvasGroup; // Dark panel canvas group
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private RectTransform pausePanelRect;
+    [SerializeField] private RectTransform pauseButtonRect;
+    [SerializeField] private float _topPosPanelPauseY, _middlePosPanelPauseY;
+    [SerializeField] private float _topPosButtonPauseX, _middlePosButtonPauseX;
+    [SerializeField] private float _tweenDurationPanelPause;
+    [SerializeField] private float _tweenDurationButtonPause;
+    [SerializeField] private CanvasGroup canvasGroup; // Dark panel canvas group
 
+    /// <summary>
+    /// Pauses the game ad stops time
+    /// </summary>
     public void Pause()
     {
         pauseMenu.SetActive(true); // activate pause menu
@@ -21,12 +24,18 @@ public class PauseMenu : MonoBehaviour
         PausePanelIntro();
     }
 
+    /// <summary>
+    /// Go the main menu and resumes time
+    /// </summary>
     public void Home()
     {
         SceneManager.LoadScene("MainMenuScene"); // go to main menu scene
         Time.timeScale = 1;
     }
 
+    /// <summary>
+    /// Resumes the time and continues the game
+    /// </summary>
     public async void Resume()
     {
         await PausePanelOutro(); // pause menu WAITS for this fucntion to end until proceding
@@ -34,24 +43,32 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    /// <summary>
+    /// Reloads the entire scene
+    /// </summary>
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //Reload active scene
         Time.timeScale = 1;
     }
 
-    void PausePanelIntro()
+    /// <summary>
+    /// manages the dark panels fade in, handles the DOTween animation duration and position when spwaning in
+    /// </summary>
+    private void PausePanelIntro()
     {
-        canvasGroup.DOFade(1, tweenDurationPanelPause).SetUpdate(true); // regulates the fade
-        pausePanelRect.DOAnchorPosY(middlePosPanelPauseY, tweenDurationPanelPause).SetUpdate(true); // specify the target position and determine the time to reach set destination
-        pauseButtonRect.DOAnchorPosY(middlePosButtonPauseX, tweenDurationButtonPause).SetUpdate(true);
+        canvasGroup.DOFade(1, _tweenDurationPanelPause).SetUpdate(true); // regulates the fade
+        pausePanelRect.DOAnchorPosY(_middlePosPanelPauseY, _tweenDurationPanelPause).SetUpdate(true); // specify the target position and determine the time to reach set destination
+        pauseButtonRect.DOAnchorPosY(_middlePosButtonPauseX, _tweenDurationButtonPause).SetUpdate(true);
     }
 
-
-    async Task PausePanelOutro()
+    /// <summary>
+    /// manages the dark panels fade out, handles the DOTween animation duration and position when spwaning out of the scene
+    /// </summary>
+    private async Task PausePanelOutro()
     {
-        canvasGroup.DOFade(0, tweenDurationPanelPause).SetUpdate(true); // regulates the fade
-        await pausePanelRect.DOAnchorPosY(topPosPanelPauseY, tweenDurationPanelPause).SetUpdate(true).AsyncWaitForCompletion(); // makes the animation asynchronous so it waits for the animation to end
-        await pauseButtonRect.DOAnchorPosY(topPosButtonPauseX, tweenDurationButtonPause).SetUpdate(true).AsyncWaitForCompletion();
+        canvasGroup.DOFade(0, _tweenDurationPanelPause).SetUpdate(true); // regulates the fade
+        await pausePanelRect.DOAnchorPosY(_topPosPanelPauseY, _tweenDurationPanelPause).SetUpdate(true).AsyncWaitForCompletion(); // makes the animation asynchronous so it waits for the animation to end
+        await pauseButtonRect.DOAnchorPosY(_topPosButtonPauseX, _tweenDurationButtonPause).SetUpdate(true).AsyncWaitForCompletion();
     }
 }
