@@ -16,23 +16,23 @@ public class GridTileSwapping : MonoBehaviour
     {
         GameObject tile1 = _gridGeneration.Grid[tile1Position.x, tile1Position.y];
         GameObject tile2 = _gridGeneration.Grid[tile2Position.x, tile2Position.y];
-        Vector2 newPos = new Vector2(tile1.transform.position.x, tile1.transform.position.y);
 
+        // Swap world positions
+        Vector2 tile1WorldPos = tile1.transform.position;
         tile1.transform.position = tile2.transform.position;
-        tile2.transform.position = newPos;
+        tile2.transform.position = tile1WorldPos;
 
+        // Swap in grid array
         _gridGeneration.Grid[tile1Position.x, tile1Position.y] = tile2;
         _gridGeneration.Grid[tile2Position.x, tile2Position.y] = tile1;
 
+        // Update the Position field on each tile's MedicineSelect component
+        tile1.GetComponent<MedicineSelect>().Position = tile2Position;
+        tile2.GetComponent<MedicineSelect>().Position = tile1Position;
+
         _gridGeneration.Matching.CheckForMatches(tile1);
-
-        /*
-        if (changesOccured)
-        {
-            StartCoroutine(delaySwitch(tile1, tile2));
-        }*/
+        _gridGeneration.Matching.CheckForMatches(tile2);
     }
-
     private IEnumerator delaySwitch(GameObject tile1, GameObject tile2)
     {
         Vector2 newPos = new Vector2(tile1.transform.position.x, tile1.transform.position.y);

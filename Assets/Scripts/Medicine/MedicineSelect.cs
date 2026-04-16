@@ -1,30 +1,35 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MedicineSelect : MonoBehaviour
 {
     private SpriteRenderer _renderer;
-    private Color _originalColor;
+    private Vector3 _originalScale;
+    private Vector3 _selectedScale;
     private GridTileSwapping _tileSwapping;
 
+    public bool Swapable = true;
     public Vector2Int Position;
     private void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
         _tileSwapping = GetComponent<GridTileSwapping>();
-        _originalColor = _renderer.color;
+        _originalScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, 1);
+        _selectedScale = new Vector3(0.275f, 0.275f, 1);
 
     }
 
     public void Unselect()
     {
+        Swapable = true;
         GameData.SelectedTile = null;
-        _renderer.color = _originalColor;
+        gameObject.transform.localScale = _originalScale;
     }
     public void Select()
     {
-        _renderer.color = Color.white;
         GameData.SelectedTile = this;
+        gameObject.transform.localScale = _selectedScale;
     }
 
     private void OnMouseDown()

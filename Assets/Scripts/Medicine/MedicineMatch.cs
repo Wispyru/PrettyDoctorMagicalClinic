@@ -7,40 +7,87 @@ using UnityEngine.Scripting;
 public class MedicineMatch : MonoBehaviour
 {
     private GridGeneration _gridGeneration;
-
+    private GridTileSwapping _tileSwapping;
     private void Start()
     {
         _gridGeneration = GetComponent<GridGeneration>();
+        _tileSwapping = GetComponent<GridTileSwapping>();
     }
     
-    public void CheckForMatches(GameObject current)
-    {
+public void CheckForMatches(GameObject current)
+{
         Debug.Log("Running check for matches");
 
-        
-        HashSet<MedicineData> matches = new HashSet<MedicineData>();
-        Stack<MedicineData> checkedList = new Stack<MedicineData>();
         MedicineData currentData = current.GetComponent<MedicineData>();
+        MedicineType targetType = currentData.Type;
 
-        checkedList.Push(currentData);
-        if (checkedList.TryPop(out var target))
+        // Check horizontal and vertical lines separately
+        HashSet<MedicineData> horizontalMatches = GetLineMatches(currentData, targetType, true);
+        HashSet<MedicineData> verticalMatches = GetLineMatches(currentData, targetType, false);
+
+        HashSet<MedicineData> matches = new HashSet<MedicineData>();
+
+        if (horizontalMatches.Count >= 3)
+            matches.UnionWith(horizontalMatches);
+
+        if (verticalMatches.Count >= 3)
+            matches.UnionWith(verticalMatches);
+
+        Debug.Log($"Total matches found: {matches.Count}");
+
+        if (matches.Count >= 3)
         {
-            Debug.Log($"reached checked list target, target is {target}");
-            List<MedicineData> neighbours = GetNeighbours(target.transform);
-            MedicineType targetType = target.Type;
+            MatchDestroy(matches);
+        }
 
-            foreach (MedicineData neighbour in neighbours)
+        
+    }
+
+    private HashSet<MedicineData> GetLineMatches(MedicineData origin, MedicineType targetType, bool horizontal)
+    {
+        HashSet<MedicineData> matches = new HashSet<MedicineData>();
+        Stack<MedicineData> toCheck = new Stack<MedicineData>();
+
+        matches.Add(origin);
+        toCheck.Push(origin);
+
+        while (toCheck.Count > 0)
+        {
+            MedicineData target = toCheck.Pop();
+
+            int x = (int)target.transform.position.x;
+            int y = (int)target.transform.position.y;
+
+            Vector2Int[] directions = horizontal
+                ? new[] { new Vector2Int(x + 1, y), new Vector2Int(x - 1, y) }
+                : new[] { new Vector2Int(x, y + 1), new Vector2Int(x, y - 1) };
+
+            foreach (Vector2Int dir in directions)
             {
-                Debug.Log(neighbour);
-                checkedList.Push(currentData);
+                if (!IsValid(dir.x, dir.y)) continue;
+
+                MedicineData neighbour = _gridGeneration.Grid[dir.x, dir.y].GetComponent<MedicineData>();
+
+                if (neighbour == null || matches.Contains(neighbour)) continue;
+
                 if (neighbour.Type == targetType)
                 {
-                    Debug.Log($"{neighbour} matches with {target}");
                     matches.Add(neighbour);
-                    continue;
+                    toCheck.Push(neighbour);
                 }
+               
             }
+
         }
+
+        
+    Debug.Log($"Total matches found: {matches.Count}");
+
+    if (matches.Count >= 3)
+    {
+        MatchDestroy(matches);
+    }
+        return matches;
     }
 
 
