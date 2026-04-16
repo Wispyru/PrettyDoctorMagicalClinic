@@ -64,6 +64,9 @@ public class MedicineMatch : MonoBehaviour
             {
                 if (!IsValid(dir.x, dir.y)) continue;
 
+                // Skip destroyed/empty slots
+                if (_gridGeneration.Grid[dir.x, dir.y] == null) continue;
+
                 MedicineData neighbour = _gridGeneration.Grid[dir.x, dir.y].GetComponent<MedicineData>();
 
                 if (neighbour == null || matches.Contains(neighbour)) continue;
@@ -114,6 +117,8 @@ public class MedicineMatch : MonoBehaviour
     {
         foreach (MedicineData g in matches)
         {
+            Vector2Int pos = g.GetComponent<MedicineSelect>().Position;
+            _gridGeneration.Grid[pos.x, pos.y] = null;
             GameObject.Destroy(g.gameObject);
         }
         matches.Clear();
