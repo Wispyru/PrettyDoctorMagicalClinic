@@ -34,6 +34,8 @@ public class MedicineSelect : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (GameData.IsAnimating) return;
+
         if (GameData.SelectedTile == null)
         {
             Select();
@@ -46,7 +48,6 @@ public class MedicineSelect : MonoBehaviour
             return;
         }
 
-        // A different tile is already selected
         if (Vector2Int.Distance(GameData.SelectedTile.Position, Position) == 1)
         {
             _tileSwapping.SwapTiles(GameData.SelectedTile.Position, Position);
@@ -58,4 +59,5 @@ public class MedicineSelect : MonoBehaviour
             Select();
         }
     }
+    
 }
