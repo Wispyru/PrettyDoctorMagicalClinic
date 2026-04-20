@@ -34,8 +34,14 @@ public class LevelMenu : MonoBehaviour
     /// </summary>
     private void SetButtonState(Button button, bool isUnlocked)
     {
-        // Enable or disable the button interaction
-        button.interactable = isUnlocked;
+        // Replace with this so locked buttons still receive clicks for the shake:
+        button.interactable = true;
+        CanvasGroup buttonCanvasGroup = button.GetComponent<CanvasGroup>();
+        if (buttonCanvasGroup == null)
+            buttonCanvasGroup = button.gameObject.AddComponent<CanvasGroup>();
+
+        buttonCanvasGroup.interactable = isUnlocked;
+        buttonCanvasGroup.blocksRaycasts = true; // keeps clicks going through for shake
 
         // Adjust the alpha on the button's Image to show it's unavailable
         Image buttonImage = button.GetComponent<Image>();
