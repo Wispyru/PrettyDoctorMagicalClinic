@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GridCascade : MonoBehaviour
 {
-    [SerializeField]
     private float _fallSpeed = 10f;
 
     private GridGeneration _gridGeneration;
