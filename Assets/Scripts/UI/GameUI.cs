@@ -1,21 +1,18 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class GameUI : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI _comboText;
-
-    [SerializeField]
-    private TextMeshProUGUI _movesText;
-
     [SerializeField]
     private TextMeshProUGUI[] _scoreTexts;
 
     [SerializeField]
     private Image[] _scoreIcons;
+
+    [SerializeField]
+    private TextMeshProUGUI _comboText;
 
     [SerializeField]
     private Sprite[] _medicineSprites;
@@ -31,9 +28,7 @@ public class GameUI : MonoBehaviour
     private void Start()
     {
         SetupScoreIcons();
-        UpdateScoreDisplays();
-        UpdateMovesDisplay();
-        HideComboText();
+        ResetComboText();
     }
 
     /// <summary>
@@ -49,50 +44,55 @@ public class GameUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Updates all five medicine type score displays from GameData.
+    /// Updates all UI elements to reflect the current GameData state.
     /// </summary>
-    public void UpdateScoreDisplays()
+    public void UpdateUI()
     {
-        if (_scoreTexts.Length < 5) return;
-
-        _scoreTexts[0].text = GameData.ScoreMedicineType1.ToString();
-        _scoreTexts[1].text = GameData.ScoreMedicineType2.ToString();
-        _scoreTexts[2].text = GameData.ScoreMedicineType3.ToString();
-        _scoreTexts[3].text = GameData.ScoreMedicineType4.ToString();
-        _scoreTexts[4].text = GameData.ScoreMedicineType5.ToString();
+        UpdateScoreDisplays();
+        UpdateComboDisplay();
     }
 
     /// <summary>
-    /// Updates the moves remaining display from GameData.
+    /// Updates each medicine type score text.
     /// </summary>
-    public void UpdateMovesDisplay()
+    private void UpdateScoreDisplays()
     {
-        _movesText.text = GameData.CurrentMoves.ToString();
-    }
-
-    /// <summary>
-    /// Shows the combo text for the given combo count, then fades it out after a delay.
-    /// </summary>
-    public void ShowComboText(int comboCount)
-    {
-        if (comboCount <= 1) return;
-
-        _comboFadeTween?.Kill();
-
-        _comboText.text = $"x{comboCount} COMBO!";
-        _comboText.alpha = 1f;
-
-        _comboFadeTween = DOVirtual.DelayedCall(_comboFadeDelay, () =>
+        for (int i = 0; i < _scoreTexts.Length; i++)
         {
-            _comboText.DOFade(0f, _comboFadeDuration);
-        });
+            if (i < GameData.ScorePerType.Length)
+                _scoreTexts[i].text = GameData.ScorePerType[i].ToString();
+        }
     }
 
     /// <summary>
-    /// Hides the combo text instantly.
+    /// Shows the combo text if the combo is active, then fades it out after a delay.
     /// </summary>
-    private void HideComboText()
+    private void UpdateComboDisplay()
     {
-        _comboText.alpha = 0f;
+        if (GameData.CurrentComboCount <= 1)
+        {
+            ResetComboText();
+            return;
+        }
+
+        _comboText.text = $"x{GameData.CurrentComboCount} COMBO!";
+        _comboText.color = new Color(_comboText.color.r, _comboText.color.g, _comboText.color.b, 1f);
+
+        if (_comboFadeTween != null)
+            _comboFadeTween.Kill();
+
+        _comboFadeTween = _comboText.DOFade(0f, _comboFadeDuration)
+            .SetDelay(_comboFadeDelay);
+    }
+
+    /// <summary>
+    /// Hides the combo text and kills any active fade tween.
+    /// </summary>
+    private void ResetComboText()
+    {
+        if (_comboFadeTween != null)
+            _comboFadeTween.Kill();
+
+        _comboText.color = new Color(_comboText.color.r, _comboText.color.g, _comboText.color.b, 0f);
     }
 }

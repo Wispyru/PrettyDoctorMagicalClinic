@@ -22,6 +22,7 @@ public class MedicineMatch : MonoBehaviour
 
         _matchComboCount = 1;
         GameData.CurrentMoves = _levelData.MaxMoves;
+        GameData.MaxMoves = _levelData.MaxMoves;
     }
 
     /// <summary>
@@ -45,14 +46,17 @@ public class MedicineMatch : MonoBehaviour
 
         if (matches.Count >= 3)
         {
-            int points = CalculatePoints(matches, currentData);
-            AddPoints(currentData.Type, points);
-
             if (fromPlayer)
                 DecreaseMoves();
 
+            int points = CalculatePoints(matches, currentData);
+            GameData.CurrentPoints += points;
+            UpdateScoreForType(currentData.Type, points);
+
             MatchDestroy(matches);
             HandleCombo();
+
+            _gameUI.UpdateUI();
             return true;
         }
 
@@ -60,41 +64,21 @@ public class MedicineMatch : MonoBehaviour
     }
 
     /// <summary>
-    /// Adds points to the correct medicine type score and total in GameData.
-    /// </summary>
-    private void AddPoints(MedicineType type, int points)
-    {
-        GameData.CurrentPoints += points;
-
-        switch (type)
-        {
-            case MedicineType.MedicineType1:
-                GameData.ScoreMedicineType1 += points;
-                break;
-            case MedicineType.MedicineType2:
-                GameData.ScoreMedicineType2 += points;
-                break;
-            case MedicineType.MedicineType3:
-                GameData.ScoreMedicineType3 += points;
-                break;
-            case MedicineType.MedicineType4:
-                GameData.ScoreMedicineType4 += points;
-                break;
-            case MedicineType.MedicineType5:
-                GameData.ScoreMedicineType5 += points;
-                break;
-        }
-
-        _gameUI.UpdateScoreDisplays();
-    }
-
-    /// <summary>
-    /// Decreases the current move count by one and updates the UI.
+    /// Decrements the player's remaining moves by one.
     /// </summary>
     private void DecreaseMoves()
     {
-        GameData.CurrentMoves--;
-        _gameUI.UpdateMovesDisplay();
+        GameData.CurrentMoves = Mathf.Max(0, GameData.CurrentMoves - 1);
+    }
+
+    /// <summary>
+    /// Adds the scored points to the correct medicine type score bucket.
+    /// </summary>
+    private void UpdateScoreForType(MedicineType type, int points)
+    {
+        int index = (int)type;
+        if (index >= 0 && index < GameData.ScorePerType.Length)
+            GameData.ScorePerType[index] += points;
     }
 
     /// <summary>
@@ -109,7 +93,6 @@ public class MedicineMatch : MonoBehaviour
             StopCoroutine(_comboTimerCoroutine);
 
         _comboTimerCoroutine = StartCoroutine(ComboTimerRoutine());
-        _gameUI.ShowComboText(_matchComboCount);
     }
 
     /// <summary>
@@ -119,6 +102,7 @@ public class MedicineMatch : MonoBehaviour
     {
         yield return new WaitForSeconds(_levelData.ComboWindow);
         ResetCombo();
+        _gameUI.UpdateUI();
     }
 
     /// <summary>
