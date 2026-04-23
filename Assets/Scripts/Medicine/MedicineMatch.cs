@@ -9,6 +9,7 @@ public class MedicineMatch : MonoBehaviour
 
     private GridGeneration _gridGeneration;
     private GridCascade _gridCascade;
+    private GameUI _gameUI;
 
     private int _matchComboCount;
     private Coroutine _comboTimerCoroutine;
@@ -17,13 +18,16 @@ public class MedicineMatch : MonoBehaviour
     {
         _gridGeneration = GetComponent<GridGeneration>();
         _gridCascade = GetComponent<GridCascade>();
+        _gameUI = FindAnyObjectByType<GameUI>();
+
         _matchComboCount = 1;
+        GameData.CurrentMoves = _levelData.MaxMoves;
     }
 
     /// <summary>
     /// Checks if the given tile is part of a match of 3 or more and destroys them if so.
     /// </summary>
-    public bool CheckForMatches(GameObject current)
+    public bool CheckForMatches(GameObject current, bool fromPlayer = false)
     {
         MedicineData currentData = current.GetComponent<MedicineData>();
         MedicineType targetType = currentData.Type;
@@ -42,7 +46,10 @@ public class MedicineMatch : MonoBehaviour
         if (matches.Count >= 3)
         {
             int points = CalculatePoints(matches, currentData);
-            GameData.CurrentPoints += points;
+            AddPoints(currentData.Type, points);
+
+            if (fromPlayer)
+                DecreaseMoves();
 
             MatchDestroy(matches);
             HandleCombo();
@@ -50,6 +57,44 @@ public class MedicineMatch : MonoBehaviour
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// Adds points to the correct medicine type score and total in GameData.
+    /// </summary>
+    private void AddPoints(MedicineType type, int points)
+    {
+        GameData.CurrentPoints += points;
+
+        switch (type)
+        {
+            case MedicineType.MedicineType1:
+                GameData.ScoreMedicineType1 += points;
+                break;
+            case MedicineType.MedicineType2:
+                GameData.ScoreMedicineType2 += points;
+                break;
+            case MedicineType.MedicineType3:
+                GameData.ScoreMedicineType3 += points;
+                break;
+            case MedicineType.MedicineType4:
+                GameData.ScoreMedicineType4 += points;
+                break;
+            case MedicineType.MedicineType5:
+                GameData.ScoreMedicineType5 += points;
+                break;
+        }
+
+        _gameUI.UpdateScoreDisplays();
+    }
+
+    /// <summary>
+    /// Decreases the current move count by one and updates the UI.
+    /// </summary>
+    private void DecreaseMoves()
+    {
+        GameData.CurrentMoves--;
+        _gameUI.UpdateMovesDisplay();
     }
 
     /// <summary>
@@ -64,6 +109,7 @@ public class MedicineMatch : MonoBehaviour
             StopCoroutine(_comboTimerCoroutine);
 
         _comboTimerCoroutine = StartCoroutine(ComboTimerRoutine());
+        _gameUI.ShowComboText(_matchComboCount);
     }
 
     /// <summary>
@@ -147,10 +193,10 @@ public class MedicineMatch : MonoBehaviour
         List<MedicineData> collectedNeighbors = new List<MedicineData>();
 
         Vector2Int[] directions = {
-            new Vector2Int(pos.x,     pos.y + 1), // up
-            new Vector2Int(pos.x,     pos.y - 1), // down
-            new Vector2Int(pos.x - 1, pos.y),     // left
-            new Vector2Int(pos.x + 1, pos.y),     // right
+            new Vector2Int(pos.x,     pos.y + 1),
+            new Vector2Int(pos.x,     pos.y - 1),
+            new Vector2Int(pos.x - 1, pos.y),
+            new Vector2Int(pos.x + 1, pos.y),
         };
 
         foreach (Vector2Int dir in directions)

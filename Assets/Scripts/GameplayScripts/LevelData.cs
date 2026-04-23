@@ -4,6 +4,6 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     public float MaxTime;
-    public int MaxMoves;
     public float ComboWindow;
+    public int MaxMoves;
 }

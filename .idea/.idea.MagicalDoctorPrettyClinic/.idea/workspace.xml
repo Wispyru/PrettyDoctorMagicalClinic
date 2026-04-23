@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f9e5b2d6-d375-48da-bb59-277048dde97e" name="Changes" comment="" />
+    <list default="true" id="f9e5b2d6-d375-48da-bb59-277048dde97e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameplayScripts/LevelData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameplayScripts/LevelData.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,7 +31,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "feature/core-gameplay",
+    "git-widget-placeholder": "feature/combo-mechanic",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -85,6 +87,7 @@
       <updated>1775719867438</updated>
       <workItem from="1775719869770" duration="10000" />
       <workItem from="1775737203710" duration="1727000" />
+      <workItem from="1776936312787" duration="478000" />
     </task>
     <servers />
   </component>
