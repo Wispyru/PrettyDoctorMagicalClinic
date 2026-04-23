@@ -13,6 +13,7 @@ public class MedicineMatch : MonoBehaviour
 
     private int _matchComboCount;
     private Coroutine _comboTimerCoroutine;
+    private float _comboTimeRemaining;
 
     private void Start()
     {
@@ -85,7 +86,6 @@ public class MedicineMatch : MonoBehaviour
 
     /// <summary>
     /// Increments the combo count if a combo is already active, otherwise just starts the timer.
-    /// Updates GameData and restarts the combo timer.
     /// </summary>
     private void HandleCombo()
     {
@@ -94,18 +94,33 @@ public class MedicineMatch : MonoBehaviour
             _matchComboCount++;
             GameData.CurrentComboCount = _matchComboCount;
             StopCoroutine(_comboTimerCoroutine);
+            Debug.Log($"Combo incremented to {_matchComboCount}");
+        }
+        else
+        {
+            Debug.Log("Combo timer started - first match");
         }
 
+        _comboTimeRemaining = _levelData.ComboWindow;
         GameData.IsComboActive = true;
-        _comboTimerCoroutine = StartCoroutine(ComboTimerRoutine());
+        _comboTimerCoroutine = StartCoroutine(ComboTimerRoutine(_comboTimeRemaining));
     }
 
     /// <summary>
-    /// Waits for the combo window to expire and then resets the combo count.
+    /// Counts down the combo window, pausing while cascades are animating, and resets when it expires.
     /// </summary>
-    private IEnumerator ComboTimerRoutine()
+    private IEnumerator ComboTimerRoutine(float duration)
     {
-        yield return new WaitForSeconds(_levelData.ComboWindow);
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            if (!GameData.IsAnimating)
+                elapsed += Time.deltaTime;
+
+            _comboTimeRemaining = duration - elapsed;
+            yield return null;
+        }
+
         ResetCombo();
     }
 
@@ -114,9 +129,11 @@ public class MedicineMatch : MonoBehaviour
     /// </summary>
     private void ResetCombo()
     {
+        Debug.Log("Combo reset");
         _matchComboCount = 1;
         GameData.CurrentComboCount = _matchComboCount;
         GameData.IsComboActive = false;
+        _comboTimeRemaining = 0f;
         _comboTimerCoroutine = null;
     }
 

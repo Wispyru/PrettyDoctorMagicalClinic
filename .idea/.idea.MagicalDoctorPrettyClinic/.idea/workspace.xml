@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f9e5b2d6-d375-48da-bb59-277048dde97e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MagicalDoctorPrettyClinic/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MagicalDoctorPrettyClinic/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Medicine/MedicineMatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Medicine/MedicineMatch.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -18,6 +17,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameplayScripts/LevelData/Level1.asset" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/GameUI.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -89,7 +89,7 @@
       <updated>1775719867438</updated>
       <workItem from="1775719869770" duration="10000" />
       <workItem from="1775737203710" duration="1727000" />
-      <workItem from="1776936312787" duration="4031000" />
+      <workItem from="1776936312787" duration="8023000" />
     </task>
     <servers />
   </component>
