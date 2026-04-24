@@ -25,9 +25,9 @@ public class LevelMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _descriptionText;
     [SerializeField] private TextMeshProUGUI _minimumScoreText;
     [SerializeField] private TextMeshProUGUI _playerScoreText;
-    [SerializeField] private TextMeshProUGUI _starsText;  // Displays ??? etc.
+    [SerializeField] private StarRating _starRating;  // Visual star rating display
     [SerializeField] private Button _proceedButton;
-    [SerializeField] private Button _exitButton;
+    [SerializeField] private Button _closeButton;
 
     private float _lockedAlpha = 0.4f;
     private int _selectedLevelId = -1; // Tracks which level was clicked
@@ -122,21 +122,11 @@ public class LevelMenu : MonoBehaviour
         int savedScore = PlayerPrefs.GetInt("Score_Level" + (index + 1), 0);
         _playerScoreText.text = "Best Score: " + savedScore;
 
-        _starsText.text = CalculateStars(savedScore, data.MinimumScore);
-    }
-
-    /// <summary>
-    /// Returns a star string based on the player's score vs the minimum score.
-    /// 1 star = 30%, 2 stars = 60%, 3 stars = 100% of minimum score.
-    /// </summary>
-    private string CalculateStars(int score, int minimumScore)
-    {
-        float percentage = minimumScore > 0 ? (float)score / minimumScore * 100f : 0f;
-
-        if (percentage >= 100f) return "???";
-        if (percentage >= 60f) return "???";
-        if (percentage >= 30f) return "???";
-        return "???";
+        // Update the visual star rating
+        if (_starRating != null)
+        {
+            _starRating.SetStars(savedScore, data.MinimumScore);
+        }
     }
 
     /// <summary>
@@ -165,8 +155,11 @@ public class LevelMenu : MonoBehaviour
     /// <summary>
     /// Loads the selected level scene when the proceed button is pressed.
     /// </summary>
-    public void OpenLevel(int levelId)
+    public void OpenLevel()
     {
-        SceneManager.LoadScene(levelId);
+        if (_selectedLevelId > 0)
+        {
+            SceneManager.LoadScene(_selectedLevelId);
+        }
     }
 }
